@@ -1,1 +1,1 @@
-web: node crowdzero-api-main/app.js
+web: ls
