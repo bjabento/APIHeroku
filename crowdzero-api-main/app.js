@@ -28,9 +28,13 @@ app.get('/user', (req, res) => {
 })
 
 app.post('/login', (req, res) => {
-    User.findAll({
+    const body = req.body.Body
+    res.set('Content-Type', 'text/plain')
+    res.send(`You sent: ${body} to Express`)
+
+   /* User.findAll({
         where:{
             email: req.urlencoded({extended : true})
         }
-    }).then(user => res.send(user)).catch(err => console.log(err));
+    }).then(user => res.send(user)).catch(err => console.log(err));*/
 })
