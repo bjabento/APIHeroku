@@ -29,7 +29,7 @@ app.get('/user', (req, res) => {
 
 app.post('/login', (req, res) => {
     const b = req.body.Body
-    console.log({b})
+    console.log(b)
 
    /* User.findAll({
         where:{
