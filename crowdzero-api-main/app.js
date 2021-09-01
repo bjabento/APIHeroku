@@ -28,9 +28,8 @@ app.get('/user', (req, res) => {
 })
 
 app.post('/login', (req, res) => {
-    const body = req.body.Body
-    res.set('Content-Type', 'text/plain')
-    res.send(`You sent: ${body} to Express`)
+    const b = req.body.Body
+    console.log({b})
 
    /* User.findAll({
         where:{
