@@ -34,7 +34,13 @@ app.post('/login', (req, res) => {
     console.log(a)
     console.log(b)
 
-    res.send(a+b)
+    User.findAll({
+        where:{
+            email: a,
+            pass: b
+        }
+    }).then(user => res.send(user)).catch(err => console.log(err));
+
 
    /* User.findAll({
         where:{
