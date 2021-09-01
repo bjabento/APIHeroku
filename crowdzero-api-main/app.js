@@ -28,7 +28,10 @@ app.get('/user', (req, res) => {
 })
 
 app.post('/login', (req, res) => {
-    const b = req.body.Body
+    const a = req.body.user
+    const b = req.body.pass
+
+    console.log(a)
     console.log(b)
 
    /* User.findAll({
