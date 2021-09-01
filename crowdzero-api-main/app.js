@@ -34,6 +34,8 @@ app.post('/login', (req, res) => {
     console.log(a)
     console.log(b)
 
+    res.send(a+b)
+
    /* User.findAll({
         where:{
             email: req.urlencoded({extended : true})
