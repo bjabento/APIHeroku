@@ -26,3 +26,11 @@ app.get('/user', (req, res) => {
         }
     }).then(user => res.send(user)).catch(err => console.log(err));
 })
+
+app.post('/login', (req, res) => {
+    User.findAll({
+        where:{
+            email: req.urlencoded({extended : true})
+        }
+    }).then(user => res.send(user)).catch(err => console.log(err));
+})
