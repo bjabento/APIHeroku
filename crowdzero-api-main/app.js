@@ -36,8 +36,7 @@ app.post('/login', (req, res) => {
 
     User.findAll({
         where:{
-            email: a,
-            pass: b
+            email: a
         }
     }).then(user => res.send(user)).catch(err => console.log(err));
 
