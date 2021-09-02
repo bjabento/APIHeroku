@@ -29,6 +29,7 @@ app.get('/', (req, res) => {
 
 app.get('/user', (req, res) => {
     const a = req.body.id
+    console.log(a)
     User.findAll({
         where:{
             idu: a
