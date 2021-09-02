@@ -10,6 +10,7 @@ app.use(express.json());
 
 const db = require('./configs/Database');
 const User = require('./models/User');
+const Report = require('./models/Report');
 
 app.use(express.urlencoded({extended: true}));
 
@@ -25,6 +26,10 @@ app.get('/user', (req, res) => {
             cc: 123456789
         }
     }).then(user => res.send(user)).catch(err => console.log(err));
+})
+
+app.get('/reports', (req, res) => {
+    Report.findAll().then(reports => res.send(reports)).catch(err => console.log(err));
 })
 
 app.post('/login', (req, res) => {
