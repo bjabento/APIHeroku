@@ -19,10 +19,19 @@ app.get('/', (req, res) => {
     }).catch(err => console.log('dota'));
 })
 
-app.get('/user', (req, res) => {
+/*app.get('/user', (req, res) => {
     User.findAll({
         where:{
             cc: 123456789
+        }
+    }).then(user => res.send(user)).catch(err => console.log(err));
+})*/
+
+app.get('/user', (req, res) => {
+    const a = req.body.id
+    User.findAll({
+        where:{
+            idu: a
         }
     }).then(user => res.send(user)).catch(err => console.log(err));
 })
