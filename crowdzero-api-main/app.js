@@ -11,6 +11,7 @@ app.use(express.json());
 const db = require('./configs/Database');
 const User = require('./models/User');
 const Report = require('./models/Report');
+const Local = require('./models/Local');
 
 app.use(express.urlencoded({extended: true}));
 
@@ -30,6 +31,10 @@ app.get('/user', (req, res) => {
 
 app.get('/reports', (req, res) => {
     Report.findAll().then(reports => res.send(reports)).catch(err => console.log(err));
+})
+
+app.get('/locals', (req, res) => {
+    Local.findAll().then(reports => res.send(reports)).catch(err => console.log(err));
 })
 
 app.post('/login', (req, res) => {
