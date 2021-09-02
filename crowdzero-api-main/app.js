@@ -19,20 +19,10 @@ app.get('/', (req, res) => {
     }).catch(err => console.log('dota'));
 })
 
-/*app.get('/user', (req, res) => {
+app.get('/user', (req, res) => {
     User.findAll({
         where:{
             cc: 123456789
-        }
-    }).then(user => res.send(user)).catch(err => console.log(err));
-})*/
-
-app.get('/user', (req, res) => {
-    const i = req.body.id
-    console.log(i)
-    User.findAll({
-        where:{
-            idu: a
         }
     }).then(user => res.send(user)).catch(err => console.log(err));
 })
@@ -47,6 +37,25 @@ app.post('/login', (req, res) => {
     User.findAll({
         where:{
             email: a
+        }
+    }).then(user => res.send(user)).catch(err => console.log(err));
+
+
+   /* User.findAll({
+        where:{
+            email: req.urlencoded({extended : true})
+        }
+    }).then(user => res.send(user)).catch(err => console.log(err));*/
+})
+
+app.post('/userData', (req, res) => {
+    const a = req.body.id
+
+    console.log(a)
+
+    User.findAll({
+        where:{
+            idu: a
         }
     }).then(user => res.send(user)).catch(err => console.log(err));
 
