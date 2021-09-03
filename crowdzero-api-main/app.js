@@ -38,6 +38,17 @@ app.post('/login', (req, res) => {
 
 app.post('/reportPost', (req, res) => {
     console.log(req.body)
+    const reportData = {
+        idu: req.body.idu,
+        idl: req.body.idl,
+        latr: req.body.latitude,
+        longr: req.body.longitude,
+        nivel: req.body.nivel,
+        data: req.body.data
+    };
+
+    const report = new Report(reportData);
+    report.save().then(result => console.log(result)).catch(err => console.log(err))
 })
 
 
