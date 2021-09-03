@@ -15,6 +15,32 @@ const Local = require('./models/Local');
 
 app.use(express.urlencoded({extended: true}));
 
+app.post('/login', (req, res) => {
+    const a = req.body.user
+    const b = req.body.pass
+
+    console.log(a)
+    console.log(b)
+
+    User.findAll({
+        where:{
+            email: a
+        }
+    }).then(user => res.send(user)).catch(err => console.log(err));
+
+
+   /* User.findAll({
+        where:{
+            email: req.urlencoded({extended : true})
+        }
+    }).then(user => res.send(user)).catch(err => console.log(err));*/
+})
+
+app.post('/reportPost', (req, res) => {
+    console.log(req.body)
+})
+
+
 app.get('/', (req, res) => {
     User.findAll().then(users => {
         res.render('index', {users: users});
@@ -39,26 +65,6 @@ app.get('/locals', (req, res) => {
     }).catch(err => console.log(err));
 })
 
-app.post('/login', (req, res) => {
-    const a = req.body.user
-    const b = req.body.pass
-
-    console.log(a)
-    console.log(b)
-
-    User.findAll({
-        where:{
-            email: a
-        }
-    }).then(user => res.send(user)).catch(err => console.log(err));
-
-
-   /* User.findAll({
-        where:{
-            email: req.urlencoded({extended : true})
-        }
-    }).then(user => res.send(user)).catch(err => console.log(err));*/
-})
 
 app.post('/userData', (req, res) => {
     const a = req.body.id

@@ -15,8 +15,20 @@ const Report = db.define('report', {
         type: Sequelize.INTEGER,
         allowNull: false
     },
+    latr: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    longr: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
     nivel: {
         type: Sequelize.INTEGER,
+        allowNull: false
+    },
+    data: {
+        type: Sequelize.DATE,
         allowNull: false
     }
 },{timestamps: false})
