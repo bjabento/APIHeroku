@@ -26,15 +26,17 @@ app.get('/user', (req, res) => {
         where:{
             cc: 123456789
         }
-    }).then(user => res.send(user)).catch(err => console.log(err));
+    }).then(user => res.send({user})).catch(err => console.log(err));
 })
 
 app.get('/reports', (req, res) => {
-    Report.findAll().then(reports => res.send(reports)).catch(err => console.log(err));
+    Report.findAll().then(reports => res.send({reports})).catch(err => console.log(err));
 })
 
 app.get('/locals', (req, res) => {
-    Local.findAll().then(locals => res.send('{' + locals + '}')).catch(err => console.log(err));
+    Local.findAll().then(locals => {
+        res.send({locals})
+    }).catch(err => console.log(err));
 })
 
 app.post('/login', (req, res) => {
