@@ -34,7 +34,7 @@ app.get('/reports', (req, res) => {
 })
 
 app.get('/locals', (req, res) => {
-    Local.findAll().then(reports => res.send(reports)).catch(err => console.log(err));
+    Local.findAll().then(locals => res.send('{' + locals + '}')).catch(err => console.log(err));
 })
 
 app.post('/login', (req, res) => {
