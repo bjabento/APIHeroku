@@ -30,7 +30,8 @@ app.post('/registar', (req, res) => {
         email: req.body.ema,
         pass: req.body.pas,
         contacto: req.body.con,
-        cc: req.body.cci
+        cc: req.body.cci,
+        idgoogle: req.body.idg
     };
 
     const regista = new User(regis);
