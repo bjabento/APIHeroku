@@ -87,7 +87,6 @@ app.post('/reportPost', (req, res) => {
     
 })
 
-<<<<<<< HEAD
 app.post('/updateUser/:id', (req, res) => {
     const idu = req.params.id;
 
@@ -106,7 +105,6 @@ app.post('/updateUser/:id', (req, res) => {
     }).then(user => user.update(userUpdate)).catch(err => console.log(err))
 })
 
-=======
 app.post('/feedbackPost', (req, res) => {
     console.log(req.body)
     const feedbackData = {
@@ -114,7 +112,6 @@ app.post('/feedbackPost', (req, res) => {
         idr: req.body.idr,
         feedback: req.body.feedb
     };
->>>>>>> ec709d00865f9621b6afd6bc6108fed7b5d9b97c
 
     const feedbac = new Feedback(feedbackData);
     feedbac.save().then(result => console.log(result)).catch(err => console.log(err))
