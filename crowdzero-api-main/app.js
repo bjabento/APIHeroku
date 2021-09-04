@@ -12,7 +12,7 @@ const db = require('./configs/Database');
 const User = require('./models/User');
 const Report = require('./models/Report');
 const Local = require('./models/Local');
-const Feedba = require('./models/Feedback');
+const Feedback = require('./models/Feedback');
 
 app.use(express.urlencoded({extended: true}));
 
