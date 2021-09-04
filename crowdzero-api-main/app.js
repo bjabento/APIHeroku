@@ -25,6 +25,7 @@ app.get('/', (req, res) => {
 app.post('/registar', (req, res) => {
     console.log(req.body)
     const regis = {
+        idu: req.body.idp,
         cargo: req.body.car,
         nome: req.body.nom,
         email: req.body.ema,
