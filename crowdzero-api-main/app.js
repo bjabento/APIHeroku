@@ -15,14 +15,9 @@ const moment = require('moment');
 const db = require('./configs/Database');
 const User = require('./models/User');
 const Report = require('./models/Report');
-<<<<<<< HEAD
 const Locals = require('./models/Locals')
 const Feedback = require('./models/Feedback');
 const Admin = require('./models/Admins');
-=======
-const Local = require('./models/Local');
-const Feedback = require('./models/Feedback');
->>>>>>> 2e20b1ad81cb984fae636f719ea1169352c5fa4f
 
 app.use(express.urlencoded({extended: true}));
 
