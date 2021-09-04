@@ -49,6 +49,7 @@ app.post('/reportPost', (req, res) => {
 
     const report = new Report(reportData);
     report.save().then(result => console.log(result)).catch(err => console.log(err))
+    
 })
 
 
