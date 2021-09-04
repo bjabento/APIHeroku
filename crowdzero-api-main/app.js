@@ -38,25 +38,37 @@ app.post('/registar', (req, res) => {
 
 })
 
+app.post('/registarGoo', (req, res) => {
+    const regisG = {
+        cargo: req.body.car,
+        nome: req.body.nom,
+        email: req.body.ema,
+        idgoogle: req.body.idg
+    };
+
+    const registaG = new User(regisG);
+    registaG.save().then(result => console.log("Sucesso")).catch(err => console.log("Falhei"))
+
+})
+
 app.post('/login', (req, res) => {
     const a = req.body.user
-    const b = req.body.pass
-
-    console.log(a)
-    console.log(b)
 
     User.findAll({
         where:{
             email: a
         }
     }).then(user => res.send(user)).catch(err => console.log(err));
+})
 
+app.post('/loginGoo', (req, res) => {
+    const a = req.body.google
 
-   /* User.findAll({
+    User.findAll({
         where:{
-            email: req.urlencoded({extended : true})
+            idgoogle: a
         }
-    }).then(user => res.send(user)).catch(err => console.log(err));*/
+    }).then(user => res.send(user)).catch(err => console.log(err));
 })
 
 app.post('/reportPost', (req, res) => {
