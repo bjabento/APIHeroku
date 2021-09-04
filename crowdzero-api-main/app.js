@@ -335,13 +335,13 @@ app.get('/reports', (req, res) => {
     Report.findAll().then(reports => res.send({reports})).catch(err => console.log(err));
 })
 
-<<<<<<< HEAD
 app.get('/login', (req, res) =>{
 
     req.session.adminType = 2
     console.log(req.session.adminType)
     res.render('login')
-=======
+})
+
 app.post('/reportsData', (req, res) => {
     const a = req.body.idr
 
@@ -352,7 +352,6 @@ app.post('/reportsData', (req, res) => {
             idr: a
         }
     }).then(reports => res.send({reports})).catch(err => console.log(err));
->>>>>>> 2e20b1ad81cb984fae636f719ea1169352c5fa4f
 })
 
 
@@ -414,7 +413,6 @@ app.post('/userData', (req, res) => {
         where:{
             idu: a
         }
-<<<<<<< HEAD
     }).then(user => res.send(user)).catch(err => console.log(err));
 
 })
@@ -424,7 +422,4 @@ app.get('/localForm', redirectLogin, (req, res) => {
         console.log(locals)
         res.render('locationForm');
     }).catch(err => console.log(err))
-=======
     }).then(user => res.send({user})).catch(err => console.log(err));
->>>>>>> 2e20b1ad81cb984fae636f719ea1169352c5fa4f
-})
