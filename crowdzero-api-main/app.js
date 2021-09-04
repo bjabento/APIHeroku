@@ -134,11 +134,11 @@ app.post('/reportsData', (req, res) => {
 
     console.log(a)
 
-    User.findAll({
+    Report.findAll({
         where:{
             idr: a
         }
-    }).then(user => res.send({user})).catch(err => console.log(err));
+    }).then(reports => res.send({reports})).catch(err => console.log(err));
 })
 
 
