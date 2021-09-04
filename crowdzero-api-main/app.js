@@ -15,9 +15,14 @@ const moment = require('moment');
 const db = require('./configs/Database');
 const User = require('./models/User');
 const Report = require('./models/Report');
+<<<<<<< HEAD
 const Locals = require('./models/Locals')
 const Feedback = require('./models/Feedback');
 const Admin = require('./models/Admins');
+=======
+const Local = require('./models/Local');
+const Feedback = require('./models/Feedback');
+>>>>>>> 2e20b1ad81cb984fae636f719ea1169352c5fa4f
 
 app.use(express.urlencoded({extended: true}));
 
@@ -163,6 +168,7 @@ app.post('/updateUser/:id', (req, res) => {
     const idu = req.params.id;
 
     const userUpdate = {
+        cargo: req.body.cargo,
         nome: req.body.nome,
         email: req.body.email,
         pass: req.body.pass,
@@ -334,11 +340,24 @@ app.get('/reports', (req, res) => {
     Report.findAll().then(reports => res.send({reports})).catch(err => console.log(err));
 })
 
+<<<<<<< HEAD
 app.get('/login', (req, res) =>{
 
     req.session.adminType = 2
     console.log(req.session.adminType)
     res.render('login')
+=======
+app.post('/reportsData', (req, res) => {
+    const a = req.body.idr
+
+    console.log(a)
+
+    Report.findAll({
+        where:{
+            idr: a
+        }
+    }).then(reports => res.send({reports})).catch(err => console.log(err));
+>>>>>>> 2e20b1ad81cb984fae636f719ea1169352c5fa4f
 })
 
 
@@ -400,6 +419,7 @@ app.post('/userData', (req, res) => {
         where:{
             idu: a
         }
+<<<<<<< HEAD
     }).then(user => res.send(user)).catch(err => console.log(err));
 
 })
@@ -409,4 +429,7 @@ app.get('/localForm', redirectLogin, (req, res) => {
         console.log(locals)
         res.render('locationForm');
     }).catch(err => console.log(err))
+=======
+    }).then(user => res.send({user})).catch(err => console.log(err));
+>>>>>>> 2e20b1ad81cb984fae636f719ea1169352c5fa4f
 })
