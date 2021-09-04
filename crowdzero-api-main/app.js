@@ -91,6 +91,7 @@ app.post('/updateUser/:id', (req, res) => {
     const idu = req.params.id;
 
     const userUpdate = {
+        cargo: req.body.cargo,
         nome: req.body.nome,
         email: req.body.email,
         pass: req.body.pass,
