@@ -30,7 +30,8 @@ const User = db.define('user', {
         unique: true
     },
     idgoogle:{
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
     },
 },{timestamps: false})
 
