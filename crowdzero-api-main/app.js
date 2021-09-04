@@ -52,6 +52,24 @@ app.post('/reportPost', (req, res) => {
     
 })
 
+app.post('/updateUser/:id', (req, res) => {
+    const idu = req.params.id;
+
+    const userUpdate = {
+        nome: req.body.nome,
+        email: req.body.email,
+        pass: req.body.pass,
+        contacto: req.body.contacto,
+        cc: req.body.cc
+    }
+
+    User.find({
+        where:{
+            idu: idu
+        }
+    }).then(user => user.update(userUpdate)).catch(err => console.log(err))
+})
+
 
 app.get('/', (req, res) => {
     User.findAll().then(users => {
@@ -70,6 +88,7 @@ app.get('/user', (req, res) => {
 app.get('/reports', (req, res) => {
     Report.findAll().then(reports => res.send({reports})).catch(err => console.log(err));
 })
+
 
 app.get('/locals', (req, res) => {
     Local.findAll().then(locals => {
