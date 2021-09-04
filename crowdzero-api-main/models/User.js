@@ -26,7 +26,7 @@ const User = db.define('user', {
     },
     cc:{
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         unique: true
     },
     idgoogle:{
