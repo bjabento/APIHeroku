@@ -146,12 +146,5 @@ app.post('/userData', (req, res) => {
         where:{
             idu: a
         }
-    }).then(user => res.send(user)).catch(err => console.log(err));
-
-
-   /* User.findAll({
-        where:{
-            email: req.urlencoded({extended : true})
-        }
-    }).then(user => res.send(user)).catch(err => console.log(err));*/
+    }).then(user => res.send({user})).catch(err => console.log(err));
 })
