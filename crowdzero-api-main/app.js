@@ -16,6 +16,28 @@ const Feedba = require('./models/Feedback');
 
 app.use(express.urlencoded({extended: true}));
 
+app.get('/', (req, res) => {
+    User.findAll().then(users => {
+        res.render('index', {users: users});
+    }).catch(err => console.log('dota'));
+})
+
+app.post('/registar', (req, res) => {
+    console.log(req.body)
+    const regis = {
+        cargo: req.body.car,
+        nome: req.body.nom,
+        email: req.body.ema,
+        pass: req.body.pas,
+        contacto: req.body.con,
+        cc: req.body.cci
+    };
+
+    const regista = new User(regis);
+    regista.save().then(result => console.log(result)).catch(err => console.log(err))
+
+})
+
 app.post('/login', (req, res) => {
     const a = req.body.user
     const b = req.body.pass
@@ -63,12 +85,6 @@ app.post('/feedbackPost', (req, res) => {
 
     const feedbac = new Feedback(feedbackData);
     feedbac.save().then(result => console.log(result)).catch(err => console.log(err))
-})
-
-app.get('/', (req, res) => {
-    User.findAll().then(users => {
-        res.render('index', {users: users});
-    }).catch(err => console.log('dota'));
 })
 
 app.get('/user', (req, res) => {

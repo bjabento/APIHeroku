@@ -14,9 +14,6 @@ const User = db.define('user', {
         type: Sequelize.STRING,
         allowNull: false
     },
-    idade:{
-        type: Sequelize.INTEGER,
-    },
     email:{
         type: Sequelize.STRING,
         allowNull: false
