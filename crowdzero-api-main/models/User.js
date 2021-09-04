@@ -14,9 +14,6 @@ const User = db.define('user', {
         type: Sequelize.STRING,
         allowNull: false
     },
-    idade:{
-        type: Sequelize.INTEGER,
-    },
     email:{
         type: Sequelize.STRING,
         allowNull: false
@@ -29,11 +26,12 @@ const User = db.define('user', {
     },
     cc:{
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         unique: true
     },
     idgoogle:{
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING,
+        unique: true
     },
 },{timestamps: false})
 

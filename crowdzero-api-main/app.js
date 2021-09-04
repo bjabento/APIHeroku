@@ -12,28 +12,63 @@ const db = require('./configs/Database');
 const User = require('./models/User');
 const Report = require('./models/Report');
 const Local = require('./models/Local');
+const Feedba = require('./models/Feedback');
 
 app.use(express.urlencoded({extended: true}));
 
+app.get('/', (req, res) => {
+    User.findAll().then(users => {
+        res.render('index', {users: users});
+    }).catch(err => console.log('dota'));
+})
+
+app.post('/registar', (req, res) => {
+    const regis = {
+        cargo: req.body.car,
+        nome: req.body.nom,
+        email: req.body.ema,
+        pass: req.body.pas,
+        contacto: req.body.con,
+        cc: req.body.cci,
+        idgoogle: req.body.idg
+    };
+
+    const regista = new User(regis);
+    regista.save().then(result => console.log("Sucesso")).catch(err => console.log("Falhei"))
+
+})
+
+app.post('/registarGoo', (req, res) => {
+    const regisG = {
+        cargo: req.body.car,
+        nome: req.body.nom,
+        email: req.body.ema,
+        idgoogle: req.body.idg
+    };
+
+    const registaG = new User(regisG);
+    registaG.save().then(result => console.log("Sucesso")).catch(err => console.log("Falhei"))
+
+})
+
 app.post('/login', (req, res) => {
     const a = req.body.user
-    const b = req.body.pass
-
-    console.log(a)
-    console.log(b)
 
     User.findAll({
         where:{
             email: a
         }
     }).then(user => res.send(user)).catch(err => console.log(err));
+})
 
+app.post('/loginGoo', (req, res) => {
+    const a = req.body.google
 
-   /* User.findAll({
+    User.findAll({
         where:{
-            email: req.urlencoded({extended : true})
+            idgoogle: a
         }
-    }).then(user => res.send(user)).catch(err => console.log(err));*/
+    }).then(user => res.send(user)).catch(err => console.log(err));
 })
 
 app.post('/reportPost', (req, res) => {
@@ -52,6 +87,7 @@ app.post('/reportPost', (req, res) => {
     
 })
 
+<<<<<<< HEAD
 app.post('/updateUser/:id', (req, res) => {
     const idu = req.params.id;
 
@@ -70,11 +106,18 @@ app.post('/updateUser/:id', (req, res) => {
     }).then(user => user.update(userUpdate)).catch(err => console.log(err))
 })
 
+=======
+app.post('/feedbackPost', (req, res) => {
+    console.log(req.body)
+    const feedbackData = {
+        idu: req.body.idu,
+        idr: req.body.idr,
+        feedback: req.body.feedb
+    };
+>>>>>>> ec709d00865f9621b6afd6bc6108fed7b5d9b97c
 
-app.get('/', (req, res) => {
-    User.findAll().then(users => {
-        res.render('index', {users: users});
-    }).catch(err => console.log('dota'));
+    const feedbac = new Feedback(feedbackData);
+    feedbac.save().then(result => console.log(result)).catch(err => console.log(err))
 })
 
 app.get('/user', (req, res) => {
