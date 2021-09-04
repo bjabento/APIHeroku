@@ -129,6 +129,18 @@ app.get('/reports', (req, res) => {
     Report.findAll().then(reports => res.send({reports})).catch(err => console.log(err));
 })
 
+app.post('/reportsData', (req, res) => {
+    const a = req.body.id
+
+    console.log(a)
+
+    User.findAll({
+        where:{
+            idr: a
+        }
+    }).then(user => res.send({user})).catch(err => console.log(err));
+})
+
 
 app.get('/locals', (req, res) => {
     Local.findAll().then(locals => {
