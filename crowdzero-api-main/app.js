@@ -130,7 +130,7 @@ app.get('/reports', (req, res) => {
 })
 
 app.post('/reportsData', (req, res) => {
-    const a = req.body.id
+    const a = req.body.idr
 
     console.log(a)
 
