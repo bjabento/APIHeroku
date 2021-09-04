@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <style>
+        body {
+            background-color: #508bfc;
+        }
+        .side {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+        .side a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+        .side a:hover {
+            color: #f1f1f1;
+        }
+        .side .closebtn{
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        #main {
+            transition: margin-left .5s;
+            padding: 16px;
+        }
+
+        @media screen and (max-height: 450px){
+            .sidenav {padding-top: 15px;}
+            .sidenav a {font-size: 18px;}
+        }
+
+    </style>
+</head>
+<body>
+    <div id="sideNav" class="side">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="/">Dashboard</a>
+        <a href="/localForm">Create locals</a>
+        <a href="/adminForm">Add admin</a>
+        <a href="/adminDashboard">Admins</a>
+        <a href="/login">Log out</a>
+    </div>
+    <div id="main" style="background-color: #508bfc;">
+        <section class="vh-99" style="background-color: #508bfc;">
+            <span style="font-size: 30px;cursor:pointer" id="burger" onclick="openNav()">&#9776;</span>
+            <div class="container py-5 h-99">
+                <div class="row d-flex justify-content-center align-items-center h-99">
+                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                        <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                            <div class="card-body p-5 text-center">
+                                <h2>CrowdZero</h2>
+                                
+                                <form action="/addAdmin" method="POST">
+                                    <h3 class="mb-5">Adicionar Admin</h3>
+                                    
+                                    <div class="form-outline mb-4">
+                                        <input type="text" name="nome" placeholder="Nome" class="form-control form-control-lg" >
+                                    </div>
+        
+                                    <div class="form-outline mb-4">
+                                        <input type="text" name="email" placeholder="Email" class="form-control form-control-lg" >
+                                    </div>
+
+                                    <div class="form-outline mb-4">
+                                        <input type="password" name="pass" placeholder="Password" class="form-control form-control-lg" >
+                                    </div>
+
+                                    <div class="form-outline mb-4">
+                                        <input type="text" name="contacto" placeholder="Contacto" class="form-control form-control-lg" >
+                                    </div>
+
+                                    <div class="form-outline mb-4">
+                                        <input type="text" name="cc" placeholder="CC" class="form-control form-control-lg" >
+                                    </div>
+        
+                                    <button class="btn btn-primary btn-lg btn-block">Adicionar</button>
+                                </form>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script>
+        function openNav() {
+            document.getElementById("sideNav").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+            document.getElementById("burger").style.display = "none";
+        }
+
+        function closeNav() {
+            document.getElementById("sideNav").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+            document.getElementById("burger").style.display = "block";
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -6,31 +6,179 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <style>
+        .side {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+        .side a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+        .side a:hover {
+            color: #f1f1f1;
+        }
+        .side .closebtn{
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        #main {
+            transition: margin-left .5s;
+            padding: 16px;
+        }
+
+        @media screen and (max-height: 450px){
+            .sidenav {padding-top: 15px;}
+            .sidenav a {font-size: 18px;}
+        }
+
+    </style>
 </head>
 <body>
-    <table class="table">
-        <tr>
-            <thead>
-                <td>nome</td>
-                <td>idade</td>
-                <td>email</td>
-                <td>cargo</td>
-                <td>contacto</td>
-                <td>cc</td>
-            </thead>
-        </tr>
-        <% for (let i = 0; i < users.length; i++) { %>
-        <tr>
-            <td><%= users[i].dataValues.nome %> </td>
-            <td><%= users[i].dataValues.idade %> </td>
-            <td><%= users[i].dataValues.email %> </td>
-            <td><%= users[i].dataValues.cargo %> </td>
-            <td><%= users[i].dataValues.contacto %> </td>
-            <td><%= users[i].dataValues.cc %> </td>
-        </tr>    
-        <% } %>  
-    </table>
-    <button><a href="/form">Add client</a></button>
+    <div id="sideNav" class="side">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="/">Dashboard</a>
+        <a href="/localForm">Create locals</a>
+        <% console.log(session) %> 
+        <% if(session.adminType==0){ %> 
+        <a href="/adminForm">Add admin</a>
+        <a href="/adminDashboard">Admins</a>
+        <% } %> 
+        <a href="/login">Log out</a>
+    </div>
+    <div id="main">
+        <span style="font-size: 30px;cursor:pointer" id="burger" onclick="openNav()">&#9776;</span>
+        <% if(finalResults.length != 0) { %> 
+            <% var newText = ""; %>
+            <% for(var i = 0; i < finalResults.length; i++){ %>
+                <% newText += `${finalResults[i].dataValues.nome}, `  %> 
+            <% } %> 
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Movimento!</strong> Locals muito movimentados sao <%= newText %> .
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <% } %> 
+        <div id="chartDiv"></div>
+        <button class="btn btn-primary" onclick="getDados('day')">Dia</button>
+        <button class="btn btn-primary" onclick="getDados('week')">Semana</button>
+        <button class="btn btn-primary" onclick="getDados('month')">Mes</button>
+        <table class="table">
+            <tr>
+                <thead>
+                    <td>nome</td>
+                    <td>idade</td>
+                    <td>email</td>
+                    <td>cargo</td>
+                    <td>contacto</td>
+                    <td>cc</td>
+                    <td>points</td>
+                </thead>
+            </tr>
+            <% for (let i = 0; i < users.length; i++) { %>
+            <tr>
+                <td><%= users[i].dataValues.nome %> </td>
+                <td><%= users[i].dataValues.idade %> </td>
+                <td><%= users[i].dataValues.email %> </td>
+                <td><%= users[i].dataValues.cargo %> </td>
+                <td><%= users[i].dataValues.contacto %> </td>
+                <td><%= users[i].dataValues.cc %> </td>
+                <td><%= points[i] %></td>
+            </tr>    
+            <% } %>  
+        </table>
+    </div>
+    
+    <script type="text/javascript">
+        function getDados(option){
+            fetch(`/getReports/${option}`,{
+                methods: 'GET'
+            }).then(result => result.json()).then(parseData => {
+                var dataToAdd = [['Location', 'Low', 'Mid', 'High']]
+                for(var i = 0; i < parseData.length; i++){
+                    dataToAdd.push(parseData[i].slice(0,4))
+                }
+                console.log(dataToAdd)
+                var options = {
+                    chart: {
+                        title: 'Company Performance',
+                        subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+                    }
+                };
+                var data = new google.visualization.arrayToDataTable(dataToAdd);
+                var chart = new google.charts.Bar(document.getElementById('chartDiv'));
+                chart.draw(data, google.charts.Bar.convertOptions(options));
+            }).catch(err => console.log(err));
+        }
+        
+        function openNav() {
+            document.getElementById("sideNav").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+            document.getElementById("burger").style.display = "none";
+        }
+
+        function closeNav() {
+            document.getElementById("sideNav").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+            document.getElementById("burger").style.display = "block";
+        }
+
+        google.charts.load('current', {'packages':['bar']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart(){
+
+            var dataToAdd = [['Location', 'Low', 'Mid', 'High']]
+            <% for(var k = 0; k < localData.length; k++){ %>
+                var temp = '<%= localData[k] %>'
+                temp = temp.split(',').slice(0,4)
+                for(var j = 1; j < 4; j++){
+                    temp[j] = parseInt(temp[j])
+                }
+                dataToAdd.push(temp)
+
+            <% } %>
+
+           var data = new google.visualization.arrayToDataTable(dataToAdd);
+            
+            
+            
+            
+
+            
+            console.log(dataToAdd);
+
+            
+        
+
+            var options = {
+          chart: {
+            title: 'Reports por local',
+          }
+        };
+
+            var chart = new google.charts.Bar(document.getElementById('chartDiv'));
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
 </body>
 </html>
