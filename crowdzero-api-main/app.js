@@ -421,5 +421,4 @@ app.get('/localForm', redirectLogin, (req, res) => {
     Locals.findAll().then(locals => {
         console.log(locals)
         res.render('locationForm');
-    }).catch(err => console.log(err))
-    }).then(user => res.send({user})).catch(err => console.log(err));
+    }).catch(err => console.log(err))})
