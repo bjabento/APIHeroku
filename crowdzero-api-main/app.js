@@ -12,6 +12,7 @@ const db = require('./configs/Database');
 const User = require('./models/User');
 const Report = require('./models/Report');
 const Local = require('./models/Local');
+const Feedback = require('./models/Feedback');
 
 app.use(express.urlencoded({extended: true}));
 
@@ -52,6 +53,17 @@ app.post('/reportPost', (req, res) => {
     
 })
 
+app.post('/feedbackPost', (req, res) => {
+    console.log(req.body)
+    const feedbackData = {
+        idu: req.body.idu,
+        idr: req.body.idr,
+        feedback: req.body.feedb
+    };
+
+    const feedback = new Feedback(feedbackData);
+    feedback.save().then(result => console.log(result)).catch(err => console.log(err))
+})
 
 app.get('/', (req, res) => {
     User.findAll().then(users => {
