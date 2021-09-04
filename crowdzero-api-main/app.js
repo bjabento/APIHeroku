@@ -23,7 +23,6 @@ app.get('/', (req, res) => {
 })
 
 app.post('/registar', (req, res) => {
-    console.log(req.body)
     const regis = {
         idu: req.body.idp,
         cargo: req.body.car,
@@ -36,7 +35,7 @@ app.post('/registar', (req, res) => {
     };
 
     const regista = new User(regis);
-    regista.save().then(result => {console.log(result)}).catch(err => {console.log(err)})
+    regista.save().then(result => {console.log("Sucesso")}).catch(err => {console.log("Falhei")})
 
 })
 
