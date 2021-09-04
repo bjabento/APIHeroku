@@ -35,7 +35,7 @@ app.post('/registar', (req, res) => {
     };
 
     const regista = new User(regis);
-    regista.save().then(result => {console.log("Sucesso")}).catch(err => {console.log("Falhei")})
+    regista.save().then(result => console.log("Sucesso")).catch(err => console.log("Falhei"))
 
 })
 
