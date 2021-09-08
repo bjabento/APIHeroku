@@ -356,7 +356,7 @@ app.post('/reportsData', (req, res) => {
 
 
 app.get('/locals', (req, res) => {
-    Local.findAll().then(locals => {
+    Locals.findAll().then(locals => {
         res.send({locals})
     }).catch(err => console.log(err));
 })
