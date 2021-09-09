@@ -413,7 +413,7 @@ app.post('/userData', (req, res) => {
         where:{
             idu: a
         }
-    }).then(user => res.send(user)).catch(err => console.log(err));
+    }).then(user => res.send({user})).catch(err => console.log(err));
 
 })
 
