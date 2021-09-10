@@ -32,7 +32,7 @@ app.use(session({
 
 const redirectLogin = (req, res, next) => {
     if(req.session.adminType >= 2){
-        res.redirect('/login')
+        res.redirect('/')
     }else{
         next()
     }
@@ -62,6 +62,7 @@ app.post('/loginRequest', (req, res) => {
             email: lMail
         }
     }).then(user => {
+        console.log(user);
         console.log(typeof(user[0].dataValues.pass))
         console.log(typeof(lPass))
         if (user.length == 1 && user[0].dataValues.pass.trim() == lPass.trim()){
@@ -70,11 +71,11 @@ app.post('/loginRequest', (req, res) => {
             }else{
                 req.session.adminType = 1
             }
-            res.redirect('/');
+            res.redirect('/dashboard');
         }else{
-            res.redirect('/login');
+            res.redirect('/');
         }
-    }).catch(err => console.log(err))
+    }).catch(err => res.redirect('/'))
 })
 
 app.post('/addAdmin', (req, res) => {
@@ -190,7 +191,7 @@ app.post('/feedbackPost', (req, res) => {
     feedbac.save().then(result => console.log(result)).catch(err => console.log(err))
 })
 
-app.get('/', redirectLogin, (req, res) => {
+app.get('/dashboard', redirectLogin, (req, res) => {
     console.log(req.session)
     User.findAll().then(users => {
         var userIds = []
@@ -335,7 +336,7 @@ app.get('/reports', (req, res) => {
     Report.findAll().then(reports => res.send({reports})).catch(err => console.log(err));
 })
 
-app.get('/login', (req, res) =>{
+app.get('/', (req, res) =>{
 
     req.session.adminType = 2
     console.log(req.session.adminType)
