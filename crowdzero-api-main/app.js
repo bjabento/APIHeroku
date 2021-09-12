@@ -215,6 +215,7 @@ app.post('/updateUser/:id', (req, res) => {
         contacto: req.body.contacto,
         cc: req.body.cc
     }
+    console.log(userUpdate)
     User.findOne({
         where: {
             idu: idu
