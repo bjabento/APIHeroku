@@ -124,7 +124,7 @@ app.post('/registarGoo', (req, res) => {
 
 })
 
-app.get('/login', (req, res) => {
+app.post('/login', (req, res) => {
     const a = req.body.user
 
     User.findAll({
@@ -405,7 +405,7 @@ app.get('/getReports/:tempo', (req, res) => {
     })
 })
 
-app.get('/userData', (req, res) => {
+app.post('/userData', (req, res) => {
     const a = req.body.id
 
     console.log(a)
