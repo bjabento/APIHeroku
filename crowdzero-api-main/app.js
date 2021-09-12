@@ -25,7 +25,7 @@ app.use(session({
     secret: "secret",
     resave: false,
     saveUninitialized: false,
-    adminType: 0,
+    adminType: 2,
     cookie:{
         expires: new Date(Date.now() + 3600000)
     }
