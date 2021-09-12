@@ -405,7 +405,7 @@ app.get('/getReports/:tempo', (req, res) => {
     })
 })
 
-app.post('/userData', (req, res) => {
+app.get('/userData', (req, res) => {
     const a = req.body.id
 
     console.log(a)
