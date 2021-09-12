@@ -25,6 +25,7 @@ app.use(session({
     secret: "secret",
     resave: false,
     saveUninitialized: false,
+    adminType: 0,
     cookie:{
         expires: new Date(Date.now() + 3600000)
     }
@@ -94,6 +95,49 @@ app.post('/addAdmin', (req, res) => {
     admin.save().then(result => res.redirect('/adminDashboard')).catch(err => console.log(err))
 })
 
+app.post('/getReports', (req, res) => {
+    console.log(req.body)
+
+
+    Locals.findAll().then(locals => {
+        var localData = []
+        for(var i = 0; i < locals.length; i++){
+            localData.push([0,0,0,0,0])
+        }
+        Report.findAll({
+            where:{
+                data: {
+                    [Sequelize.Op.or]: {
+                        [Sequelize.Op.gte]: req.body.first,
+                        [Sequelize.Op.lte]: req.body.second
+                    }
+                }
+            }
+        }).then(reports => {
+            for(var i = 0; i < locals.length; i++){
+                localData[i][0] = locals[i].dataValues.nome;
+                    for(var j = 0; j < reports.length; j++){
+                        if(locals[i].dataValues.idl == reports[j].dataValues.idl){ 
+                            if(reports[j].dataValues.nivel == 1){
+                                localData[i][1] += 1
+                                localData[i][4] += 1
+                            }else if(reports[j].dataValues.nivel == 2){
+                                localData[i][2] += 1
+                                localData[i][4] += 2
+                            }else{
+                                localData[i][3] += 1
+                                localData[i][4] += 3
+                            }
+                        }
+                    }
+                }
+            localData.sort((a,b) => {
+                return b[4] - a[4];
+            })
+            res.json(localData.slice(0,5)); 
+        }).catch(err => console.log(err));
+    })
+})
 
 app.post('/registar', (req, res) => {
     const regis = {
@@ -259,38 +303,7 @@ app.get('/dashboard', redirectLogin, (req, res) => {
                             }  
                         }
                     }).then(possibleNotif => {
-                        var p = {}
-                        var dota = possibleNotif
-                        for(var m = 0; m < dota.length; m++){
-                            if(dota[m].dataValues.idl in p){
-                                p[dota[m].dataValues.idl] += 1
-                            }else{
-                                p[dota[m].dataValues.idl] = 1
-                            }
-                        }
-                        var locationNeeded = []
-                        for(var key in p){
-                            if (p[key] >= 10){
-                                locationNeeded.push(key)
-                            }
-                        }
-                        if(locationNeeded.length != 0){
-                            Locals.findAll({
-                                attributes:['nome'],
-                                where:{
-                                    idl:{
-                                        [Sequelize.Op.or]: locationNeeded
-                                    }
-                                }
-                            }).then(finalResults => {
-                                console.log(finalResults)
-                                console.log(req.session);
-                                res.render('index', {users: users, points: points, localData: localData.slice(0,5),finalResults: finalResults, session: req.session});
-                            })
-                        }else {
-                            res.render('index', {users: users, points: points, localData: localData.slice(0,5),finalResults: locationNeeded, session: req.session});
-                        }
-                        
+                        res.render('index', {users: users, points: points, localData: localData.slice(0,5),finalResults: possibleNotif.length, session: req.session})   
                     }).catch(err => console.log(err))  
                 }).catch(err => console.log());  
             })
@@ -362,48 +375,7 @@ app.get('/locals', (req, res) => {
     }).catch(err => console.log(err));
 })
 
-app.get('/getReports/:tempo', (req, res) => {
-    const temp = req.params.tempo;
-    console.log(temp)
 
-    Locals.findAll().then(locals => {
-        var localData = []
-        for(var i = 0; i < locals.length; i++){
-            localData.push([0,0,0,0,0])
-        }
-        Report.findAll({
-            where: {
-                data: {
-                    [Sequelize.Op.gte]: moment().subtract(1,temp)
-                }
-            }
-        }).then(reports => {
-            console.log(reports)
-            for(var i = 0; i < locals.length; i++){
-                localData[i][0] = locals[i].dataValues.nome;
-                for(var j = 0; j < reports.length; j++){
-                    if(locals[i].dataValues.idl == reports[j].dataValues.idl){ 
-                        if(reports[j].dataValues.nivel == 1){
-                            localData[i][1] += 1
-                            localData[i][4] += 1
-                        }else if(reports[j].dataValues.nivel == 2){
-                            localData[i][2] += 1
-                            localData[i][4] += 2
-                        }else{
-                            localData[i][3] += 1
-                            localData[i][4] += 3
-                        }
-                    }
-                }
-            }
-            localData.sort((a,b) => {
-                return b[4] - a[4];
-            })
-            console.log(localData.slice(0,5));
-            res.json(localData.slice(0,5));  
-        }).catch(err => console.log());  
-    })
-})
 
 app.post('/userData', (req, res) => {
     const a = req.body.id
@@ -423,3 +395,54 @@ app.get('/localForm', redirectLogin, (req, res) => {
         console.log(locals)
         res.render('locationForm');
     }).catch(err => console.log(err))})
+
+app.get('/notifications', (req, res) =>{
+    Report.findAll({
+        where: {
+            nivel: 3,
+            data:{
+                [Sequelize.Op.gte]: moment().subtract(1,'week') 
+            }  
+        }
+    }).then(possibleNotif => {
+        var p = {}
+        for(var m = 0; m < possibleNotif.length; m++){
+            if(possibleNotif[m].dataValues.idl in p){
+                p[possibleNotif[m].dataValues.idl] += 1
+            }else{
+                p[possibleNotif[m].dataValues.idl] = 1
+            }
+        }
+        var locationNeeded = []
+        for(var key in p){
+            if (p[key] >= 10){
+                locationNeeded.push(key)
+            }
+        }
+        if(locationNeeded.length != 0){
+            Locals.findAll({
+                attributes:['nome'],
+                where:{
+                    idl:{
+                        [Sequelize.Op.or]: locationNeeded
+                    }
+                }
+            }).then(finalResults => {
+                console.log(finalResults)
+                console.log(req.session);
+                res.render('notifications', {finalResults: finalResults, session: req.session});
+                })
+        }else {
+            res.render('notifications', {finalResults: locationNeeded, session: req.session});
+        }
+    })
+})
+
+app.get('/getSortedPoints', (req, res) => {
+    User.findAll({
+        order:[['cargo','DESC']],
+        attributes:['idu', 'cargo']
+    }).then(results => {
+        res.send({results})
+    }).catch(err => console.log(err))
+})
