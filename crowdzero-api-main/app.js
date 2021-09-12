@@ -398,7 +398,7 @@ app.get('/notifications', (req, res) =>{
         where: {
             nivel: 3,
             data:{
-                [Sequelize.Op.gte]: moment().subtract(1,'hour') 
+                [Sequelize.Op.gte]: moment().subtract(1,'week') 
             }  
         }
     }).then(possibleNotif => {
