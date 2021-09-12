@@ -32,8 +32,6 @@ app.use(session({
 }))
 
 const redirectLogin = (req, res, next) => {
-    console.log("DOTATATATATAT:")
-    console.log(req.session.adminType)
     if(req.session.adminType >= 2 || req.session.adminType == undefined){
         res.redirect('/')
     }else{
@@ -312,15 +310,6 @@ app.get('/dashboard', redirectLogin, (req, res) => {
         }).catch(err => console.log(err));
     }).catch(err => console.log(err));
 })
-
-
-/*app.get('/user', (req, res) => {
-    User.findAll({
-        where:{
-            cc: 123456789
-        }
-    }).then(user => res.send({user})).catch(err => console.log(err));
-})*/
 
 app.get('/user', (req, res) => {
     User.findAll().then(user => res.send({user})).catch(err => console.log(err))
