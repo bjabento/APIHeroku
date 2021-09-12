@@ -215,12 +215,12 @@ app.post('/updateUser/:id', (req, res) => {
         contacto: req.body.contacto,
         cc: req.body.cc
     }
-
-    User.findAll({
+    User.update(userUpdate,{
         where:{
             idu: idu
         }
-    }).then(user => user.update(userUpdate)).catch(err => console.log(err))
+    }).then(userUpdate => console.log("success")).catch(err => console.log(err))
+    
 })
 
 app.post('/feedbackPost', (req, res) => {
@@ -388,7 +388,7 @@ app.post('/userData', (req, res) => {
 app.get('/localForm', redirectLogin, (req, res) => {
     Locals.findAll().then(locals => {
         console.log(locals)
-        res.render('locationForm');
+        res.render('locationForm',{session: session} );
     }).catch(err => console.log(err))})
 
 app.get('/notifications', (req, res) =>{
