@@ -434,7 +434,7 @@ app.get('/notifications', (req, res) =>{
         }else {
             res.render('notifications', {finalResults: locationNeeded, session: req.session});
         }
-    })
+    }).catch(err => console.log(err))
 })
 
 app.get('/getSortedPoints', (req, res) => {
