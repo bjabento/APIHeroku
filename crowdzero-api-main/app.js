@@ -124,7 +124,7 @@ app.post('/registarGoo', (req, res) => {
 
 })
 
-app.post('/login', (req, res) => {
+app.get('/login', (req, res) => {
     const a = req.body.user
 
     User.findAll({
