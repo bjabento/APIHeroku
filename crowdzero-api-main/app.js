@@ -219,7 +219,11 @@ app.post('/updateUser/:id', (req, res) => {
         where: {
             idu: idu
         }
-    }).then(user => user.update(userUpdate)).catch(err => console.log(err))
+    }).then(user => {
+        console.log(idu)
+        console.log(user)
+        user.update(userUpdate)
+    }).catch(err => console.log(err))
     
 })
 
