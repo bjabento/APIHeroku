@@ -222,7 +222,7 @@ app.post('/updateUser/:id', (req, res) => {
     }).then(user => {
         console.log(idu)
         console.log(user)
-        user.update(userUpdate).then(result => console.log('update success')).catch(err => console.log(err))
+        user.update(userUpdate).then(result => res.send('update success')).catch(err => console.log(err))
     }).catch(err => console.log(err))
     
 })
