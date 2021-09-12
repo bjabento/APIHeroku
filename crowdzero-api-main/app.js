@@ -32,6 +32,7 @@ app.use(session({
 }))
 
 const redirectLogin = (req, res, next) => {
+    console.log(req.session.adminType)
     if(req.session.adminType >= 2){
         res.redirect('/')
     }else{
