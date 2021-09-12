@@ -216,7 +216,7 @@ app.post('/updateUser/:id', (req, res) => {
         cc: req.body.cc
     }
 
-    User.find({
+    User.findAll({
         where:{
             idu: idu
         }
