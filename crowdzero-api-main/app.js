@@ -312,12 +312,16 @@ app.get('/dashboard', redirectLogin, (req, res) => {
 })
 
 
-app.get('/user', (req, res) => {
+/*app.get('/user', (req, res) => {
     User.findAll({
         where:{
             cc: 123456789
         }
     }).then(user => res.send({user})).catch(err => console.log(err));
+})*/
+
+app.get('/user', (req, res) => {
+    User.findAll().then(user => res.send({user})).catch(err => console.log(err))
 })
 
 app.get('/adminDashboard', redirectLogin, (req, res) => {
