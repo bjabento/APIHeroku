@@ -220,8 +220,6 @@ app.post('/updateUser/:id', (req, res) => {
             idu: idu
         }
     }).then(user => {
-        console.log(idu)
-        console.log(user)
         user.update(userUpdate).then(result => res.send('update success')).catch(err => console.log(err))
     }).catch(err => console.log(err))
     
@@ -400,7 +398,7 @@ app.get('/notifications', (req, res) =>{
         where: {
             nivel: 3,
             data:{
-                [Sequelize.Op.gte]: moment().subtract(1,'week') 
+                [Sequelize.Op.gte]: moment().subtract(1,'hour') 
             }  
         }
     }).then(possibleNotif => {
@@ -415,7 +413,9 @@ app.get('/notifications', (req, res) =>{
         var locationNeeded = []
         for(var key in p){
             if (p[key] >= 10){
-                locationNeeded.push(key)
+                locationNeeded.push([key, 'Alerta de desinfeção urgente'])
+            }else if(p[key] >=3 && p[key] < 10){
+                locationNeeded.push([key, 'Alerta de zona super movimentada'])
             }
         }
         if(locationNeeded.length != 0){

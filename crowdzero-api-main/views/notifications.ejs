@@ -70,11 +70,13 @@
             <tr>
                 <thead>
                     <td>Location</td>
+                    <td>Description</td>
                 </thead>
             </tr>
             <% for (let i = 0; i < finalResults.length; i++) { %>
             <tr>
-                <td><%= finalResults[i].dataValues.nome%> </td>
+                <td><%= finalResults[i].dataValues %></td>
+                <td><%=  finalResults[i].dataValues %></td>
             </tr>    
             <% } %>  
         </table>
