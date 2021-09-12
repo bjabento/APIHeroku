@@ -34,7 +34,7 @@ app.use(session({
 const redirectLogin = (req, res, next) => {
     console.log("DOTATATATATAT:")
     console.log(req.session.adminType)
-    if(req.session.adminType >= 2){
+    if(req.session.adminType >= 2 || req.session.adminType == undefined){
         res.redirect('/')
     }else{
         next()
