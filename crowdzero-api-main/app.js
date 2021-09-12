@@ -215,11 +215,11 @@ app.post('/updateUser/:id', (req, res) => {
         contacto: req.body.contacto,
         cc: req.body.cc
     }
-    User.update(userUpdate,{
-        where:{
+    User.findOne({
+        where: {
             idu: idu
         }
-    }).then(userUpdate => console.log("success")).catch(err => console.log(err))
+    }).then(user => user.update(userUpdate)).catch(err => console.log(err))
     
 })
 
