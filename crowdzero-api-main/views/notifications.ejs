@@ -76,10 +76,16 @@
             </tr>
             <% for (let i = 0; i < finalResults.length; i++) { %>
             <tr>
-                <td><%= finalResults[i].dataValues[0] %></td>
-                <td><%= finalResults[i].dataValues[1] %></td>
+                <td><%= finalResults[i].dataValues.nome%> </td>
+                <td>Alerta de desinfeção urgente</td>
             </tr>    
             <% } %>  
+            <% for (let i = 0; i < dangerWarning.length; i++) { %>
+                <tr>
+                    <td><%= dangerWarning[i].dataValues.nome%> </td>
+                    <td>Alerta de zona super movimentada</td>
+                </tr>    
+            <% } %> 
         </table>
     </div>
     
