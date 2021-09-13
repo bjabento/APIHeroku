@@ -271,7 +271,7 @@ app.get('/dashboard', redirectLogin, (req, res) => {
                 Report.findAll({
                     where: {
                         data: {
-                            [Sequelize.Op.gte]: moment().subtract(1,'day')
+                            [Sequelize.Op.gte]: moment().subtract(1,'hour')
                         }
                     }
                 }).then(reports => {
