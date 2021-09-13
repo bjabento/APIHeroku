@@ -377,7 +377,7 @@ app.get('/localDashboard', redirectLogin, (req, res) => {
 app.delete('/adminDashboard/:id', (req, res) => {
     const ida = req.params.id;
     console.log(ida);
-    Admins.destroy({
+    Admin.destroy({
         where: {
             ida: ida
         }
