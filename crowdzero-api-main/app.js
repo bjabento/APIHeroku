@@ -75,9 +75,9 @@ app.post('/loginRequest', (req, res) => {
             }
             res.redirect('/dashboard');
         }else{
-            res.redirect('/', {status:"fail"});
+            res.redirect('/');
         }
-    }).catch(err => res.redirect('/', {status:"fail"}))
+    }).catch(err => res.redirect('/'))
 })
 
 app.post('/addAdmin', (req, res) => {
