@@ -18,6 +18,7 @@ const Report = require('./models/Report');
 const Locals = require('./models/Locals')
 const Feedback = require('./models/Feedback');
 const Admin = require('./models/Admins');
+const { Session } = require('inspector');
 
 app.use(express.urlencoded({extended: true}));
 
@@ -107,7 +108,7 @@ app.post('/getReports', (req, res) => {
         Report.findAll({
             where:{
                 data: {
-                    [Sequelize.Op.or]: {
+                    [Sequelize.Op.and]: {
                         [Sequelize.Op.gte]: req.body.first,
                         [Sequelize.Op.lte]: req.body.second
                     }
@@ -238,7 +239,6 @@ app.post('/feedbackPost', (req, res) => {
 })
 
 app.get('/dashboard', redirectLogin, (req, res) => {
-    console.log(req.session)
     User.findAll().then(users => {
         var userIds = []
         for(var i = 0; i < users.length; i++){
@@ -301,11 +301,52 @@ app.get('/dashboard', redirectLogin, (req, res) => {
                         where: {
                             nivel: 3,
                             data:{
-                                [Sequelize.Op.gte]: moment().subtract(1,'day') 
+                                [Sequelize.Op.gte]: moment().subtract(1,'hour') 
                             }  
                         }
                     }).then(possibleNotif => {
-                        res.render('index', {users: users, points: points, localData: localData.slice(0,5),finalResults: possibleNotif.length, session: req.session})   
+                        var p = {}
+                        for(var m = 0; m < possibleNotif.length; m++){
+                            if(possibleNotif[m].dataValues.idl in p){
+                                p[possibleNotif[m].dataValues.idl] += 1
+                            }else{
+                                p[possibleNotif[m].dataValues.idl] = 1
+                            }
+                        }
+                        var locationNeeded = []
+                        var dangerWarning = []
+                        for(var key in p){
+                            if (p[key] >= 10){
+                                locationNeeded.push(key)
+                            }else if(p[key] >= 3 && p[key] < 10){
+                                dangerWarning.push(key)
+                            }
+                        }
+                        if(locationNeeded.length != 0){
+                            Locals.findAll({
+                                attributes:['nome'],
+                                where:{
+                                    idl:{
+                                        [Sequelize.Op.or]: locationNeeded
+                                    }
+                                }
+                            }).then(finalResults => {
+                                Locals.findAll({
+                                    attributes:['nome'],
+                                    where:{
+                                        idl:{
+                                            [Sequelize.Op.or]: dangerWarning
+                                        }
+                                    }
+                                }).then(dangerLocals => {
+                                    console.log(finalResults.length)
+                                    var numNotif = dangerLocals.length + finalResults.length
+                                    res.render('index', {users: users, points: points, localData: localData.slice(0,5),finalResults: numNotif, session: req.session})
+                                }).catch(err => console.log(err));
+                            }).catch(err => console.log(err));
+                        }else {
+                            res.render('index', {users: users, points: points, localData: localData.slice(0,5),finalResults: 0, session: req.session})
+                        }
                     }).catch(err => console.log(err))  
                 }).catch(err => console.log());  
             })
@@ -327,6 +368,12 @@ app.get('/adminDashboard', redirectLogin, (req, res) => {
     }).catch(err => console.log(err));
 })
 
+app.get('/localDashboard', redirectLogin, (req, res) => {
+    Locals.findAll().then(locals => {
+        res.render('localList', {locals: locals, session: session})
+    }).catch(err => console.log(err))
+})
+
 app.delete('/adminDashboard/:id', (req, res) => {
     const ida = req.params.id;
     console.log(ida);
@@ -335,7 +382,15 @@ app.delete('/adminDashboard/:id', (req, res) => {
             ida: ida
         }
     }).then(result => res.json({status: "success"})).catch(err => console.log(err))
-    
+})
+
+app.delete('/localDashboard/:id', (req, res) => {
+    const idl = req.params.id;
+    Locals.destroy({
+        where:{
+            idl: idl
+        }
+    }).then(result => res.json({status: "success"})).catch(err => console.log(err))
 })
 
 app.get('/adminForm', redirectLogin, (req, res) => {
@@ -347,7 +402,6 @@ app.get('/reports', (req, res) => {
 })
 
 app.get('/', (req, res) =>{
-
     req.session.adminType = 2
     console.log(req.session.adminType)
     res.render('login')
@@ -394,11 +448,12 @@ app.get('/localForm', redirectLogin, (req, res) => {
     }).catch(err => console.log(err))})
 
 app.get('/notifications', (req, res) =>{
+    var warningData = [] 
     Report.findAll({
         where: {
             nivel: 3,
             data:{
-                [Sequelize.Op.gte]: moment().subtract(1,'week') 
+                [Sequelize.Op.gte]: moment().subtract(1,'hour') 
             }  
         }
     }).then(possibleNotif => {
@@ -411,11 +466,12 @@ app.get('/notifications', (req, res) =>{
             }
         }
         var locationNeeded = []
+        var dangerWarning = []
         for(var key in p){
             if (p[key] >= 10){
-                locationNeeded.push([key, 'Alerta de desinfeção urgente'])
-            }else if(p[key] >=3 && p[key] < 10){
-                locationNeeded.push([key, 'Alerta de zona super movimentada'])
+                locationNeeded.push(key)
+            }else if(p[key] >= 3 && p[key] < 10){
+                dangerWarning.push(key)
             }
         }
         if(locationNeeded.length != 0){
@@ -427,14 +483,21 @@ app.get('/notifications', (req, res) =>{
                     }
                 }
             }).then(finalResults => {
-                console.log(finalResults)
-                console.log(req.session);
-                res.render('notifications', {finalResults: finalResults, session: req.session});
-                })
+                Locals.findAll({
+                    attributes:['nome'],
+                    where:{
+                        idl:{
+                            [Sequelize.Op.or]: dangerWarning
+                        }
+                    }
+                }).then(dangerLocals => {
+                    res.render('notifications', {finalResults: finalResults, dangerWarning: dangerLocals, session: req.session});
+                }).catch(err => console.log(err));
+            }).catch(err => console.log(err));
         }else {
-            res.render('notifications', {finalResults: locationNeeded, session: req.session});
+            res.render('notifications', {finalResults: locationNeeded, dangerWarning: locationNeeded, session: req.session});
         }
-    }).catch(err => console.log(err))
+    })
 })
 
 app.get('/getSortedPoints', (req, res) => {

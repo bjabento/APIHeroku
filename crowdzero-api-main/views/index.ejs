@@ -130,7 +130,7 @@
                 },
                 body: JSON.stringify({
                     first: String(firstDate),
-                    seconde: String(secondDate)
+                    second: String(secondDate)
                 })
             }).then(result => result.json()).then(parsedData => {
                 var dataToAdd = [['Location', 'Low', 'Mid', 'High']]
@@ -178,15 +178,16 @@
 
             <% } %>
 
-           var data = new google.visualization.arrayToDataTable(dataToAdd);
+            var data = new google.visualization.arrayToDataTable(dataToAdd);
               
             console.log(dataToAdd);
 
             var options = {
-          chart: {
-            title: 'Reports por local'
-          }
-        };
+                colors: ['green', 'yellow', 'red'],
+                chart: {
+                    title: 'Reports por local'
+                }
+            };
 
             var chart = new google.charts.Bar(document.getElementById('chartDiv'));
             chart.draw(data, google.charts.Bar.convertOptions(options));

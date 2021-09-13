@@ -56,11 +56,8 @@
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <a href="/">Dashboard</a>
         <a href="/localForm">Create locals</a>
-        <% console.log(session) %> 
-        <% if(session.adminType==0){ %> 
         <a href="/adminForm">Add admin</a>
         <a href="/adminDashboard">Admins</a>
-        <% } %> 
         <a href="/login">Log out</a>
     </div>
     <div id="main">
@@ -69,14 +66,18 @@
         <table class="table">
             <tr>
                 <thead>
-                    <td>Location</td>
-                    <td>Description</td>
+                    <td>nome</td>
+                    <td>latitude</td>
+                    <td>longitude</td>
+                    <td>remove</td>
                 </thead>
             </tr>
-            <% for (let i = 0; i < finalResults.length; i++) { %>
-            <tr>
-                <td><%= finalResults %></td>
-                <td><%=  finalResults %></td>
+            <% for (let i = 0; i < locals.length; i++) { %>
+            <tr id="row<%= locals[i].idl %>">
+                <td><%= locals[i].dataValues.nome %> </td>
+                <td><%= locals[i].dataValues.latitude %> </td>
+                <td><%= locals[i].dataValues.longitude %> </td>
+                <td><span data-doc="<%= locals[i].idl %>" onclick="deleteLocal(this)">&#10060;</span></td>
             </tr>    
             <% } %>  
         </table>
@@ -84,11 +85,11 @@
     
     <script type="text/javascript">
         
-        function deleteAdmin(admin){
+        function deleteLocal(admin){
             console.log(admin.dataset.doc);
             document.getElementById(`row${admin.dataset.doc}`).style.display = "none";
 
-            fetch(`/adminDashboard/${admin.dataset.doc}`, {
+            fetch(`/localDashboard/${admin.dataset.doc}`, {
                 method: 'DELETE'
             }).then(result => console.log(result)).catch(err => console.log(err));
         }
