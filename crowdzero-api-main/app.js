@@ -386,11 +386,18 @@ app.delete('/adminDashboard/:id', (req, res) => {
 
 app.delete('/localDashboard/:id', (req, res) => {
     const idl = req.params.id;
-    Locals.destroy({
+    Report.destroy({
         where:{
             idl: idl
         }
-    }).then(result => res.json({status: "success"})).catch(err => console.log(err))
+    }).then(result => {
+        Locals.destroy({
+            where:{
+                idl: idl
+            }
+        }).then(finalResult => res.json({status: "success"})).catch(err => console.log(err))
+    }).catch(err => console.log(err))
+    
 })
 
 app.get('/adminForm', redirectLogin, (req, res) => {
