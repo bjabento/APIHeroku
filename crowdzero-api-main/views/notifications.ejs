@@ -75,10 +75,9 @@
                 </thead>
             </tr>
             <% for (let i = 0; i < finalResults.length; i++) { %>
-                <% console.log(finalResults[0].dataValues) %> 
             <tr>
-                <td><%= finalResults[i].dataValues %></td>
-                <td><%= finalResults[i].dataValues %></td>
+                <td><%= finalResults[i].dataValues[0] %></td>
+                <td><%= finalResults[i].dataValues[1] %></td>
             </tr>    
             <% } %>  
         </table>
