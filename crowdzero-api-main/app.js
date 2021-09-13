@@ -93,7 +93,7 @@ app.post('/addAdmin', (req, res) => {
 
     const admin = new Admin(adminData);
 
-    admin.save().then(result => res.redirect('/adminDashboard', {session: req.session})).catch(err => console.log(err))
+    admin.save().then(result => res.redirect('/adminDashboard')).catch(err => console.log(err))
 })
 
 app.post('/getReports', (req, res) => {
