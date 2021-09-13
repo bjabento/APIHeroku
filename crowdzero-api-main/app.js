@@ -51,7 +51,7 @@ app.post('/addLocation', (req, res) => {
     const local = new Locals(localData);
 
     local.save().then((result) => {
-        res.redirect('/');
+        res.redirect('/localDashboard');
     }).catch(err => console.log(err));
 })
 
@@ -75,9 +75,9 @@ app.post('/loginRequest', (req, res) => {
             }
             res.redirect('/dashboard');
         }else{
-            res.redirect('/');
+            res.redirect('/', {status:"fail"});
         }
-    }).catch(err => res.redirect('/'))
+    }).catch(err => res.redirect('/', {status:"fail"}))
 })
 
 app.post('/addAdmin', (req, res) => {
@@ -364,13 +364,13 @@ app.get('/adminDashboard', redirectLogin, (req, res) => {
             tipo: 1
         }
     }).then(admins => {
-        res.render('adminList',{admins:admins, session: session})
+        res.render('adminList',{admins:admins, session: req.session})
     }).catch(err => console.log(err));
 })
 
 app.get('/localDashboard', redirectLogin, (req, res) => {
     Locals.findAll().then(locals => {
-        res.render('localList', {locals: locals, session: session})
+        res.render('localList', {locals: locals, session: req.session})
     }).catch(err => console.log(err))
 })
 
@@ -394,7 +394,7 @@ app.delete('/localDashboard/:id', (req, res) => {
 })
 
 app.get('/adminForm', redirectLogin, (req, res) => {
-    res.render('adminForm', {session: session});
+    res.render('adminForm', {session: req.session});
 })
 
 app.get('/reports', (req, res) => {
@@ -444,7 +444,7 @@ app.post('/userData', (req, res) => {
 app.get('/localForm', redirectLogin, (req, res) => {
     Locals.findAll().then(locals => {
         console.log(locals)
-        res.render('locationForm',{session: session} );
+        res.render('locationForm',{session: req.session} );
     }).catch(err => console.log(err))})
 
 app.get('/notifications', (req, res) =>{
