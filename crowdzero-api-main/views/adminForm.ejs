@@ -59,8 +59,12 @@
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <a href="/dashboard">Dashboard</a>
         <a href="/localForm">Create locals</a>
+        <a herf="/localDashboard">Locals</a>
+        <% console.log(session) %> 
+        <% if(session.adminType==0){ %> 
         <a href="/adminForm">Add admin</a>
         <a href="/adminDashboard">Admins</a>
+        <% } %> 
         <a href="/">Log out</a>
     </div>
     <div id="main" style="background-color: #508bfc;">

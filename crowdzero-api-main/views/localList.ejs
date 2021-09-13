@@ -54,11 +54,15 @@
 <body>
     <div id="sideNav" class="side">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="/">Dashboard</a>
+        <a href="/dashboard">Dashboard</a>
         <a href="/localForm">Create locals</a>
+        <a herf="/localDashboard">Locals</a>
+        <% console.log(session) %> 
+        <% if(session.adminType==0){ %> 
         <a href="/adminForm">Add admin</a>
         <a href="/adminDashboard">Admins</a>
-        <a href="/login">Log out</a>
+        <% } %> 
+        <a href="/">Log out</a>
     </div>
     <div id="main">
         <span style="font-size: 30px;cursor:pointer" id="burger" onclick="openNav()">&#9776;</span>

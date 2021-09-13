@@ -93,7 +93,7 @@ app.post('/addAdmin', (req, res) => {
 
     const admin = new Admin(adminData);
 
-    admin.save().then(result => res.redirect('/adminDashboard')).catch(err => console.log(err))
+    admin.save().then(result => res.redirect('/adminDashboard', {session: session})).catch(err => console.log(err))
 })
 
 app.post('/getReports', (req, res) => {
@@ -364,7 +364,7 @@ app.get('/adminDashboard', redirectLogin, (req, res) => {
             tipo: 1
         }
     }).then(admins => {
-        res.render('adminList',{admins:admins})
+        res.render('adminList',{admins:admins, session: session})
     }).catch(err => console.log(err));
 })
 
@@ -394,7 +394,7 @@ app.delete('/localDashboard/:id', (req, res) => {
 })
 
 app.get('/adminForm', redirectLogin, (req, res) => {
-    res.render('adminForm');
+    res.render('adminForm', {session: session});
 })
 
 app.get('/reports', (req, res) => {
